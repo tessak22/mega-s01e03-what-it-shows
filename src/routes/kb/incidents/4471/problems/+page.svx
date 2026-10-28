@@ -1,0 +1,59 @@
+---
+layout: runbook
+title: '#4471 · three problems, not one'
+owner: Tessa Kriesel
+status: proposed
+reviewed: 2026-10-28
+signature: Tessa Kriesel
+tickets:
+  parser: https://github.com/tessak22/mega-s01e03-what-it-shows/issues/1
+  hint: https://github.com/tessak22/mega-s01e03-what-it-shows/issues/2
+  shift: https://github.com/tessak22/mega-s01e03-what-it-shows/issues/3
+---
+
+<script>
+  import ProblemTable from '#lib/kb/ProblemTable.svelte';
+  import CauseTable from '#lib/kb/CauseTable.svelte';
+  import Callout from '#lib/kb/Callout.svelte';
+  import RenderStamp from '#lib/kb/RenderStamp.svelte';
+</script>
+
+[#4471](/kb/incidents/4471) is marked known: one bug, one fix queued. Read by what each report
+says, not by its subject line, it holds three problems. One fix will not close it.
+
+<Callout kind="warn">
+The queued parser fix leaves the other two open. Their reports will keep arriving under the
+same subjects and keep merging into #4471.
+</Callout>
+
+## What #4471 holds
+
+<ProblemTable ticket={4471} {tickets} />
+
+- **`parser`**: the shared parser reads every date month first. A day-first tenant's
+  7 April becomes 4 July. This is the bug #4471 names.
+- **`hint`**: the booking-v3 form prints `MM/DD/YYYY` under its date field. Day-first tenants
+  type what the hint says, and the form reads it day first. Same symptom, different code:
+  the parser fix does not touch it.
+- **`shift`**: the date lands one day off, not month-for-day. "Client in Lisbon got Tuesday.
+  Client in Toronto got Monday." A month flip cannot do that. The desk already read these as
+  a one-day move (`desk-notes.json`) and still filed them under `parser` by tenant.
+
+## How it hid
+
+- Reports merge on subject alone ([decision 0001](/kb/decisions/0001-dedupe-by-subject)).
+  All three problems produce the same subjects, so all of them landed in one ticket.
+- Intake's tag is a guess from the reporter's browser. It disagrees with the tenant's cause on
+  dozens of reports, so counting by tag gets both numbers wrong.
+- The ticket export pages overlap. Count each report id once.
+- The incident page shows the split, then footnotes the one-day moves under `parser`:
+
+<CauseTable ticket={4471} />
+
+## What to do
+
+- Track each problem on its own ticket (linked in the table). Close #4471 only when all three are fixed.
+- Re-read decision 0001: it was last reviewed in June 2024 and merges reports that are not the same bug.
+  A new record should replace it; this page does not edit it.
+
+<RenderStamp {signature} />
