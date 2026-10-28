@@ -22,7 +22,7 @@
 <p class="sum">
   <strong>{split.total}</strong> reports merged into #{ticket} ·
   <strong>{split.groups.length}</strong>
-  {split.groups.length === 1 ? 'problem' : 'problems'}
+  {split.groups.length === 1 ? 'problem' : 'problems'} · counted the desk's way: by tenant, one-day moves footnoted where they're filed
 </p>
 
 <table>
@@ -34,7 +34,11 @@
       <tr>
         <td><code>{g.problem}</code></td>
         <td>{WHAT[g.problem]}</td>
-        <td>{g.reports}</td>
+        <td>
+          {g.reports}
+          {#if g.alsoShift}<span class="note">incl. {g.alsoShift} one-day moves</span>{/if}
+          {#if g.filedUnder.length}<span class="note">filed under {g.filedUnder.join(', ')}</span>{/if}
+        </td>
         <td>{g.tenants}</td>
         <td>{g.firstSeen} → {g.lastSeen}</td>
         <td>{#if tickets[g.problem]}<a href={tickets[g.problem]}>{issue(tickets[g.problem]!)}</a>{:else}<span class="none">none yet</span>{/if}</td>
@@ -46,4 +50,5 @@
 <style>
   .sum { font-size: 1.1rem; }
   .none { color: var(--warn); font-weight: 600; }
+  .note { display: block; color: var(--muted); font-size: 0.8em; }
 </style>
