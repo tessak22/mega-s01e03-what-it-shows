@@ -36,7 +36,9 @@ Three problems, not one. The queued parser fix closes only the first.
   tenant. A month flip cannot move a date by one day ("Client in Lisbon got Tuesday. Client in
   Toronto got Monday."), so neither fix above closes them.
 
-Each ticket gives the number of reports it covers, counted as the table above counts them.
+Each ticket gives the number of reports it covers as the desk exported them: one per export
+row. The export's pages overlap, so a few reports appear twice there; the table above counts
+each report once.
 
 ## How it hid
 
