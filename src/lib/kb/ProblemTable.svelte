@@ -11,7 +11,6 @@
   const WHAT: Record<Problem, string> = {
     parser: 'shared parser reads day-first dates month first',
     hint: 'booking-v3 form hints MM/DD/YYYY to day-first tenants',
-    shift: 'date moves by one day (time zone), not a month flip',
     unplaced: 'no tenant on file, or tenant writes month first',
   };
 
@@ -22,7 +21,7 @@
 <p class="sum">
   <strong>{split.total}</strong> reports merged into #{ticket} ·
   <strong>{split.groups.length}</strong>
-  {split.groups.length === 1 ? 'problem' : 'problems'} · counted the desk's way: by tenant, one-day moves footnoted where they're filed
+  {split.groups.length === 1 ? 'problem' : 'problems'} · counted the desk's way: by tenant, each report once
 </p>
 
 <table>
@@ -36,8 +35,7 @@
         <td>{WHAT[g.problem]}</td>
         <td>
           {g.reports}
-          {#if g.alsoShift}<span class="note">incl. {g.alsoShift} one-day moves</span>{/if}
-          {#if g.filedUnder.length}<span class="note">filed under {g.filedUnder.join(', ')}</span>{/if}
+          {#if g.oneDayMoves}<span class="note">incl. {g.oneDayMoves} read as a one-day move</span>{/if}
         </td>
         <td>{g.tenants}</td>
         <td>{g.firstSeen} → {g.lastSeen}</td>

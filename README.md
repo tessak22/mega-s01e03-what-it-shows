@@ -40,4 +40,4 @@ Exported 2026-10-04 from the `support` repo, `apps/kb/` → `src/`.
 - Page: `src/routes/kb/incidents/4471/problems/+page.svx` (signed, Tessa Kriesel), logic in
   `src/lib/kb/problems.ts` and `src/lib/kb/ProblemTable.svelte`.
 - As the desk sees it: `build/kb/incidents/4471/problems/index.html` (`npm install && npm run build`).
-- One issue per problem: [#1 parser](../../issues/1), [#2 hint](../../issues/2), [#3 shift](../../issues/3).
+- One issue per problem: [#1 parser](../../issues/1), [#2 hint](../../issues/2).

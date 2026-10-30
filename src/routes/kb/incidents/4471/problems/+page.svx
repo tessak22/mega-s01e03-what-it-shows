@@ -1,14 +1,13 @@
 ---
 layout: runbook
-title: '#4471 · three problems, not one'
+title: '#4471 · two problems, not one'
 owner: Tessa Kriesel
 status: proposed
-reviewed: 2026-10-28
+reviewed: 2026-10-29
 signature: Tessa Kriesel
 tickets:
   parser: https://github.com/tessak22/mega-s01e03-what-it-shows/issues/1
   hint: https://github.com/tessak22/mega-s01e03-what-it-shows/issues/2
-  shift: https://github.com/tessak22/mega-s01e03-what-it-shows/issues/3
 ---
 
 <script>
@@ -18,11 +17,11 @@ tickets:
   import RenderStamp from '#lib/kb/RenderStamp.svelte';
 </script>
 
-[#4471](/kb/incidents/4471) is marked known: one bug, one fix queued. Read by what each report
-says, not by its subject line, it holds three problems. One fix will not close it.
+[#4471](/kb/incidents/4471) is marked known: one bug, one fix queued. Its own cause table shows
+two problems. One fix will not close it.
 
 <Callout kind="warn">
-The queued parser fix leaves the other two open. Their reports will keep arriving under the
+The queued parser fix leaves the `hint` problem open. Its reports will keep arriving under the
 same subjects and keep merging into #4471.
 </Callout>
 
@@ -35,24 +34,28 @@ same subjects and keep merging into #4471.
 - **`hint`**: the booking-v3 form prints `MM/DD/YYYY` under its date field. Day-first tenants
   type what the hint says, and the form reads it day first. Same symptom, different code:
   the parser fix does not touch it.
-- **`shift`**: the date lands one day off, not month-for-day. "Client in Lisbon got Tuesday.
-  Client in Toronto got Monday." A month flip cannot do that. The desk already read these as
-  a one-day move (`desk-notes.json`) and still filed them under `parser` by tenant.
 
 ## How it hid
 
 - Reports merge on subject alone ([decision 0001](/kb/decisions/0001-dedupe-by-subject)).
-  All three problems produce the same subjects, so all of them landed in one ticket.
+  Both problems produce the same subjects, so both landed in one ticket.
 - Intake's tag is a guess from the reporter's browser. It disagrees with the tenant's cause on
   dozens of reports, so counting by tag gets both numbers wrong.
 - The ticket export pages overlap. Count each report id once.
-- The incident page shows the split, then footnotes the one-day moves under `parser`:
+- The incident page already shows the split, as the desk exported it:
 
 <CauseTable ticket={4471} />
 
+## Still to read
+
+The desk read 5 `parser` reports as a one-day move (`desk-notes.json`): R-41202, R-41209,
+R-41236, R-41344, R-41620. A month flip cannot move a date by one day, so these may be a
+time-zone bug. They stay counted under `parser`, where the desk filed them, and are listed on
+the `parser` ticket so they get checked after the parser fix ships.
+
 ## What to do
 
-- Track each problem on its own ticket (linked in the table). Close #4471 only when all three are fixed.
+- Track each problem on its own ticket (linked in the table). Close #4471 only when both are fixed.
 - Re-read decision 0001: it was last reviewed in June 2024 and merges reports that are not the same bug.
   A new record should replace it; this page does not edit it.
 
