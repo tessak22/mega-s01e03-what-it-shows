@@ -1,61 +1,54 @@
 ---
 layout: runbook
-title: '#4471 · two problems, not one'
+title: '#4471 · three problems, not one'
 owner: Tessa Kriesel
 status: proposed
 reviewed: 2026-10-29
 signature: Tessa Kriesel
-tickets:
-  parser: https://github.com/tessak22/mega-s01e03-what-it-shows/issues/1
-  hint: https://github.com/tessak22/mega-s01e03-what-it-shows/issues/2
 ---
 
 <script>
-  import ProblemTable from '#lib/kb/ProblemTable.svelte';
   import CauseTable from '#lib/kb/CauseTable.svelte';
   import Callout from '#lib/kb/Callout.svelte';
   import RenderStamp from '#lib/kb/RenderStamp.svelte';
 </script>
 
-[#4471](/kb/incidents/4471) is marked known: one bug, one fix queued. Its own cause table shows
-two problems. One fix will not close it.
+[#4471](/kb/incidents/4471) is marked known: one issue, one fix queued. Its own cause table
+says otherwise:
 
-<Callout kind="warn">
-The queued parser fix leaves the `hint` problem open. Its reports will keep arriving under the
-same subjects and keep merging into #4471.
+<CauseTable ticket={4471} />
+
+<Callout>
+Three problems, not one. The queued parser fix closes only the first.
 </Callout>
 
-## What #4471 holds
+## One ticket per problem
 
-<ProblemTable ticket={4471} {tickets} />
+- **`parser` row**: [#1 · Shared parser reads day-first dates month first](https://github.com/tessak22/mega-s01e03-what-it-shows/issues/1).
+  The shared parser reads every date month first, and every tenant in #4471 writes the day
+  first, so 7 April comes out as 4 July. This is the bug #4471 names, and the queued fix.
+- **`hint` row**, "no ticket of its own": [#2 · booking-v3 form hints MM/DD/YYYY to day-first tenants](https://github.com/tessak22/mega-s01e03-what-it-shows/issues/2).
+  The booking-v3 form prints `MM/DD/YYYY` under its date field. Day-first tenants type what
+  the hint says, and the form reads it day first. Same symptom, different code: the parser
+  fix does not touch it.
+- **The one-day moves** under the table: [#3 · Dates move by one day across time zones, not a month flip](https://github.com/tessak22/mega-s01e03-what-it-shows/issues/3).
+  The desk read these as a one-day move (`desk-notes.json`) and filed them under `parser` by
+  tenant. A month flip cannot move a date by one day ("Client in Lisbon got Tuesday. Client in
+  Toronto got Monday."), so neither fix above closes them.
 
-- **`parser`**: the shared parser reads every date month first. A day-first tenant's
-  7 April becomes 4 July. This is the bug #4471 names.
-- **`hint`**: the booking-v3 form prints `MM/DD/YYYY` under its date field. Day-first tenants
-  type what the hint says, and the form reads it day first. Same symptom, different code:
-  the parser fix does not touch it.
+Each ticket gives the number of reports it covers, counted as the table above counts them.
 
 ## How it hid
 
 - Reports merge on subject alone ([decision 0001](/kb/decisions/0001-dedupe-by-subject)).
-  Both problems produce the same subjects, so both landed in one ticket.
+  All three problems produce the same subjects, so all of them landed in one ticket.
 - Intake's tag is a guess from the reporter's browser. It disagrees with the tenant's cause on
-  dozens of reports, so counting by tag gets both numbers wrong.
-- The ticket export pages overlap. Count each report id once.
-- The incident page already shows the split, as the desk exported it:
-
-<CauseTable ticket={4471} />
-
-## Still to read
-
-The desk read 5 `parser` reports as a one-day move (`desk-notes.json`): R-41202, R-41209,
-R-41236, R-41344, R-41620. A month flip cannot move a date by one day, so these may be a
-time-zone bug. They stay counted under `parser`, where the desk filed them, and are listed on
-the `parser` ticket so they get checked after the parser fix ships.
+  dozens of reports, so counting by tag gets the numbers wrong.
+- The ticket export pages overlap. Count each report id once, as the table does.
 
 ## What to do
 
-- Track each problem on its own ticket (linked in the table). Close #4471 only when both are fixed.
+- Track each problem on its own ticket. Close #4471 only when all three are fixed.
 - Re-read decision 0001: it was last reviewed in June 2024 and merges reports that are not the same bug.
   A new record should replace it; this page does not edit it.
 
